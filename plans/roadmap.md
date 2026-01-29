@@ -1,3 +1,93 @@
+## 🎯 **ROADMAP ACTUALIZADO**
+```
+PARKING FRONTEND - ROADMAP DE DESARROLLO
+════════════════════════════════════════════════════════════════════
+
+[✅] FASE 0: SETUP INICIAL (2-3hrs) - COMPLETADA
+    ✅ Instalación Vite + React
+    ✅ Configuración Tailwind CSS
+    ✅ Setup shadcn/ui
+    ✅ Estructura de carpetas
+    ✅ Variables de entorno
+    ✅ Proxy al backend (puerto 3000)
+
+[✅] FASE 1: LANDING PAGE (6-8hrs) - COMPLETADA
+    ✅ Router principal (React Router)
+    ✅ Header con navegación responsive
+    ✅ Footer completo
+    ✅ Hero section
+    ✅ Sección de características (6 features)
+    ✅ Sección "Cómo funciona" (4 pasos)
+    ✅ CTA (Call to Action)
+    ✅ Diseño mobile-first
+
+[ ] FASE 2: AUTENTICACIÓN (8-10hrs) - PENDIENTE
+    [ ] Página de Login
+    [ ] Página de Registro
+    [ ] Formularios con validación
+    [ ] Integración con API de auth
+    [ ] Manejo de tokens (JWT)
+    [ ] Store de autenticación (Zustand)
+    [ ] Rutas protegidas
+    [ ] Recuperación de contraseña
+    [ ] Setup 2FA (UI básica)
+
+[ ] FASE 3: DASHBOARD USUARIO (6-8hrs) - PENDIENTE
+    [ ] Layout del dashboard
+    [ ] Perfil de usuario
+    [ ] Sidebar de navegación
+    [ ] Vista de reservas activas
+    [ ] Tarjetas de puntos/loyalty
+
+[ ] FASE 4: MAPA + PARKINGS (10-12hrs) - PENDIENTE
+    [ ] Integración React Leaflet
+    [ ] Mapa interactivo
+    [ ] Geolocalización del usuario
+    [ ] Markers de parkings
+    [ ] Popup con info de parking
+    [ ] Filtros de búsqueda
+    [ ] Lista de parkings cercanos
+    [ ] Vista de disponibilidad de espacios
+
+[ ] FASE 5: SISTEMA DE RESERVAS (8-10hrs) - PENDIENTE
+    [ ] Flujo de creación de reserva
+    [ ] Selector de fecha/hora
+    [ ] Confirmación de reserva
+    [ ] Check-in/Check-out
+    [ ] Cálculo de costos en tiempo real
+    [ ] Notificaciones
+
+[ ] FASE 6: HISTORIAL + LOYALTY (6-8hrs) - PENDIENTE
+    [ ] Historial de reservas
+    [ ] Sistema de puntos visualizado
+    [ ] Niveles (Bronce/Plata/Oro)
+    [ ] Canje de puntos
+    [ ] Estadísticas personales
+
+[ ] FASE 7: PANEL ADMIN (8-10hrs) - PENDIENTE
+    [ ] Dashboard administrativo
+    [ ] Gestión de parkings
+    [ ] Aprobación de pagos
+    [ ] Analytics básicos
+    [ ] Export de datos
+
+[ ] FASE 8: PAGOS + PWA (8-10hrs) - PENDIENTE
+    [ ] Formulario de reporte de pago
+    [ ] Subir comprobantes
+    [ ] Tasa de cambio USD/VES
+    [ ] Configuración PWA (manifest.json)
+    [ ] Service Worker
+    [ ] Instalación en home screen
+    [ ] Modo offline básico
+    [ ] Notificaciones push
+
+════════════════════════════════════════════════════════════════════
+PROGRESO TOTAL: 2/8 FASES (25%)
+TIEMPO INVERTIDO: ~8-11 hrs
+TIEMPO RESTANTE ESTIMADO: ~56-76 hrs
+════════════════════════════════════════════════════════════════════
+
+
 Primary: #2563EB (Azul brillante - Confianza/Tech)
 Secondary: #10B981 (Verde - Disponibilidad/Éxito)
 Accent: #8B5CF6 (Morado - Innovación/Premium)
@@ -33,18 +123,6 @@ White: #FFFFFF
 | **6** | Historial + Loyalty | 6-8 hrs | 🟢 Media |
 | **7** | Panel Admin | 8-10 hrs | 🟢 Media |
 | **8** | Pagos + PWA Final | 8-10 hrs | 🔵 Baja |
-
----
-
-# 🚀 **FASE 0: SETUP INICIAL**
-
-## Objetivos:
-✅ Instalar Vite + React + TypeScript (pero usaremos JS)  
-✅ Configurar Tailwind CSS  
-✅ Instalar shadcn/ui  
-✅ Estructura de carpetas  
-✅ Configurar conexión al backend (puerto 3000)  
-✅ Primer componente funcional  
 
 ---
 
