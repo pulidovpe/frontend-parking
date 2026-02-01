@@ -1,0 +1,2 @@
+/* Importar Leaflet CSS solo para esta página */
+@import 'leaflet/dist/leaflet.css';

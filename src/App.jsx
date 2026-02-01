@@ -7,6 +7,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
+import Parkings from './pages/Parkings'
 
 function App() {
   return (
@@ -35,9 +36,16 @@ function App() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/parkings" 
+        element={
+          <ProtectedRoute>
+            <Parkings />
+          </ProtectedRoute>
+        } 
+      />
 
       {/* Rutas futuras (placeholder) */}
-      <Route path="/parkings" element={<ProtectedRoute><div className="p-8">Próximamente: Buscar Parkings</div></ProtectedRoute>} />
       <Route path="/reservations" element={<ProtectedRoute><div className="p-8">Próximamente: Mis Reservas</div></ProtectedRoute>} />
       <Route path="/loyalty" element={<ProtectedRoute><div className="p-8">Próximamente: Mis Puntos</div></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><div className="p-8">Próximamente: Configuración</div></ProtectedRoute>} />

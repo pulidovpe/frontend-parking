@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }) {
       name: 'Buscar Parkings',
       path: '/parkings',
       icon: <Map className="h-5 w-5" />,
-      badge: 'Próximamente',
+      // badge: 'Próximamente',
     },
     {
       name: 'Mis Reservas',
