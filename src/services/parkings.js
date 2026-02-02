@@ -78,18 +78,38 @@ const parkingService = {
     }
   },
 
-  // Obtener espacios de un parking
-  getParkingSpaces: async (parkingId) => {
-    console.log('🔍 Obteniendo espacios del parking:', parkingId)
+  // Obtener espacios de un parking (ACTUALIZADO)
+  getParkingSpaces: async (parkingId, status = null) => {
+    console.log('🔍 Obteniendo espacios del parking:', parkingId, 'con status:', status)
     try {
-      const response = await api.get(`/spaces/parking/${parkingId}`)
+      const params = { parkingId }
+      if (status) {
+        params.status = status
+      }
+      
+      const response = await api.get('/spaces', { params })
       console.log('✅ Espacios obtenidos:', response.data)
       
-      // Si el backend devuelve { success, data }
+      // El backend puede devolver { success, data } o directamente el array
       const spaces = response.data.data || response.data
       return spaces
     } catch (error) {
       console.error('❌ Error obteniendo espacios:', error.response?.data || error)
+      throw error
+    }
+  },
+
+  // Obtener disponibilidad de un parking (usando ruta pública)
+  getParkingAvailability: async (parkingId) => {
+    console.log('🔍 Obteniendo disponibilidad del parking:', parkingId)
+    try {
+      const response = await api.get(`/spaces/availability/${parkingId}`)
+      console.log('✅ Disponibilidad obtenida:', response.data)
+      
+      const availability = response.data.data || response.data
+      return availability
+    } catch (error) {
+      console.error('❌ Error obteniendo disponibilidad:', error.response?.data || error)
       throw error
     }
   },

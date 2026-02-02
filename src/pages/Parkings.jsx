@@ -125,12 +125,31 @@ export default function Parkings() {
   }
 
   const handleParkingClick = async (parking) => {
+    console.log('🅿️ Parking clickeado:', parking)
+    
     try {
-      await selectParking(parking.id)
-      // Aquí podrías abrir un modal con más detalles o navegar a otra página
-      console.log('Parking seleccionado:', parking)
+      const parkingWithSpaces = await selectParking(parking.id)
+      
+      // Mostrar información con espacios disponibles
+      const availableCount = parkingWithSpaces.spaces?.length || 0
+      
+      alert(`${parking.name}\n\n` +
+            `Dirección: ${parking.address}\n` +
+            `Tarifa: $${parking.hourlyRate}/hora\n` +
+            `Espacios disponibles: ${availableCount}\n` +
+            `Distancia: ${parking.distance?.toFixed(1)} km\n\n` +
+            `Espacios cargados correctamente ✅\n` +
+            `En la Fase 5 podrás ver el mapa de espacios y reservar.`)
+      
     } catch (err) {
-      console.error('Error al seleccionar parking:', err)
+      console.error('Error al cargar parking:', err)
+      // Si falla, mostrar info básica
+      alert(`${parking.name}\n\n` +
+            `Dirección: ${parking.address}\n` +
+            `Tarifa: $${parking.hourlyRate}/hora\n` +
+            `Disponibles: ${parking.availableSpaces} espacios\n` +
+            `Distancia: ${parking.distance?.toFixed(1)} km\n\n` +
+            `⚠️ No se pudieron cargar los detalles de espacios.`)
     }
   }
 
