@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { MapPin, Navigation } from 'lucide-react'
+import MapSkeleton from './MapSkeleton'
 
 // Fix para los iconos de Leaflet en Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -57,12 +58,29 @@ export default function MapView({
   const [mapCenter, setMapCenter] = useState(
     userLocation || [10.4806, -66.9036] // Caracas por defecto
   )
+  const [isMapReady, setIsMapReady] = useState(false)
 
   useEffect(() => {
     if (userLocation) {
       setMapCenter(userLocation)
     }
   }, [userLocation])
+
+  // Simular carga del mapa
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMapReady(true)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!isMapReady) {
+    return (
+      <div className={className}>
+        <MapSkeleton />
+      </div>
+    )
+  }
 
   return (
     <div className={`relative ${className}`}>
@@ -71,12 +89,23 @@ export default function MapView({
         zoom={13} 
         className="w-full h-full rounded-lg"
         zoomControl={true}
+        preferCanvas={true}
+        scrollWheelZoom={true}
+        doubleClickZoom={true}
+        touchZoom={true}
       >
         <MapCenterController center={userLocation} />
         
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
+          minZoom={10}
+          updateWhenIdle={true}
+          updateWhenZooming={false}
+          keepBuffer={2}
+          maxNativeZoom={19}
+          tileSize={256}
         />
 
         {/* Marcador de ubicación del usuario */}
@@ -96,37 +125,53 @@ export default function MapView({
             key={parking.id}
             position={[parking.latitude, parking.longitude]}
             icon={parkingIcon}
-            eventHandlers={{
-              click: () => onParkingClick && onParkingClick(parking)
-            }}
           >
             <Popup>
-              <div className="min-w-[200px]">
+              <div className="min-w-[250px]">
                 <h3 className="font-bold text-lg mb-2">{parking.name}</h3>
-                <p className="text-sm text-slate-600 mb-2">{parking.address}</p>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-slate-600">Precio/hora:</span>
-                  <span className="font-semibold text-primary">
-                    ${parking.hourlyRate}
-                  </span>
+                <p className="text-sm text-slate-600 mb-3">{parking.address}</p>
+                
+                <div className="space-y-2 mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">Precio/hora:</span>
+                    <span className="font-semibold text-primary">
+                      ${parking.hourlyRate}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">Disponibles:</span>
+                    <span className={`font-semibold ${
+                      parking.availableSpaces > 0 ? 'text-secondary' : 'text-error'
+                    }`}>
+                      {parking.availableSpaces || 0} espacios
+                    </span>
+                  </div>
+                  
+                  {parking.distance !== undefined && parking.distance !== null && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600">Distancia:</span>
+                      <span className="text-sm font-medium text-slate-900 flex items-center">
+                        <Navigation className="h-3 w-3 mr-1" />
+                        {parking.distance.toFixed(1)} km
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                    <span className="text-sm text-slate-600">Horario:</span>
+                    <span className="text-sm font-medium text-slate-900">
+                      {parking.isOpen24Hours ? '24 horas' : `${parking.openingTime} - ${parking.closingTime}`}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-slate-600">Disponibles:</span>
-                  <span className={`font-semibold ${
-                    parking.availableSpaces > 0 ? 'text-secondary' : 'text-error'
-                  }`}>
-                    {parking.availableSpaces || 0} espacios
-                  </span>
-                </div>
-                {parking.distance && (
-                  <p className="text-xs text-slate-500 flex items-center">
-                    <Navigation className="h-3 w-3 mr-1" />
-                    A {parking.distance.toFixed(2)} km
-                  </p>
-                )}
+
                 <button
-                  onClick={() => onParkingClick && onParkingClick(parking)}
-                  className="w-full mt-2 bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onParkingClick && onParkingClick(parking)
+                  }}
+                  className="w-full bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition"
                 >
                   Ver detalles
                 </button>

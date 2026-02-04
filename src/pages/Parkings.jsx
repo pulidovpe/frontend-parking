@@ -127,29 +127,70 @@ export default function Parkings() {
   const handleParkingClick = async (parking) => {
     console.log('🅿️ Parking clickeado:', parking)
     
+    // Limpiar error anterior
+    clearError()
+    
     try {
+      // Mostrar loading
+      console.log('⏳ Cargando detalles del parking...')
+      
       const parkingWithSpaces = await selectParking(parking.id)
       
-      // Mostrar información con espacios disponibles
-      const availableCount = parkingWithSpaces.spaces?.length || 0
+      console.log('✅ Parking con espacios cargado:', parkingWithSpaces)
       
-      alert(`${parking.name}\n\n` +
-            `Dirección: ${parking.address}\n` +
-            `Tarifa: $${parking.hourlyRate}/hora\n` +
-            `Espacios disponibles: ${availableCount}\n` +
-            `Distancia: ${parking.distance?.toFixed(1)} km\n\n` +
-            `Espacios cargados correctamente ✅\n` +
-            `En la Fase 5 podrás ver el mapa de espacios y reservar.`)
+      // Extraer datos correctamente
+      const parkingData = parkingWithSpaces.data || parkingWithSpaces
+      const availableCount = parkingData.spaces?.length || parking.availableSpaces || 0
+      
+      // Construir mensaje con datos reales
+      const message = [
+        `📍 ${parkingData.name || parking.name}`,
+        '',
+        `📌 Dirección: ${parkingData.address || parking.address}`,
+        parkingData.city ? `   ${parkingData.city}, ${parkingData.state || ''}` : '',
+        '',
+        `💵 Tarifa: $${parkingData.hourlyRate || parking.hourlyRate}/hora`,
+        `🅿️  Espacios disponibles: ${availableCount}`,
+        parking.distance ? `📏 Distancia: ${parking.distance.toFixed(1)} km` : '',
+        '',
+        `🕐 Horario: ${parkingData.isOpen24Hours || parkingData.is24Hours || parking.isOpen24Hours 
+          ? '24 horas' 
+          : `${parkingData.openingTime || parking.openingTime} - ${parkingData.closingTime || parking.closingTime}`}`,
+        '',
+        parkingData.description ? `ℹ️  ${parkingData.description}` : '',
+        '',
+        '✅ Detalles cargados correctamente',
+        '',
+        '📱 En la Fase 5 podrás:',
+        '  • Ver mapa de espacios disponibles',
+        '  • Seleccionar espacio específico',
+        '  • Hacer reserva con fecha/hora',
+      ].filter(Boolean).join('\n')
+      
+      alert(message)
       
     } catch (err) {
-      console.error('Error al cargar parking:', err)
-      // Si falla, mostrar info básica
-      alert(`${parking.name}\n\n` +
-            `Dirección: ${parking.address}\n` +
-            `Tarifa: $${parking.hourlyRate}/hora\n` +
-            `Disponibles: ${parking.availableSpaces} espacios\n` +
-            `Distancia: ${parking.distance?.toFixed(1)} km\n\n` +
-            `⚠️ No se pudieron cargar los detalles de espacios.`)
+      console.error('❌ Error completo al cargar parking:', err)
+      console.error('❌ Error response:', err.response)
+      
+      // Si falla, mostrar info básica que ya tenemos
+      const fallbackMessage = [
+        `📍 ${parking.name}`,
+        '',
+        `📌 ${parking.address}`,
+        parking.city ? `   ${parking.city}` : '',
+        '',
+        `💵 Tarifa: $${parking.hourlyRate}/hora`,
+        `🅿️  Espacios: ${parking.availableSpaces || 0}`,
+        parking.distance ? `📏 Distancia: ${parking.distance.toFixed(1)} km` : '',
+        '',
+        `🕐 ${parking.isOpen24Hours ? '24 horas' : `${parking.openingTime} - ${parking.closingTime}`}`,
+        '',
+        '⚠️ No se pudieron cargar los detalles completos',
+        '(Tu sesión sigue activa)',
+      ].filter(Boolean).join('\n')
+      
+      alert(fallbackMessage)
     }
   }
 
